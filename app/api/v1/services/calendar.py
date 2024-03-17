@@ -42,7 +42,7 @@ async def insert_event(summary, description):
 
 
 async def create_event(data: schemas.calendar.JiraDataRequest):
-    data = data.model_dump() 
+    # data = data.model_dump() 
     issue_data = data['issue']['fields']
     project_data = issue_data['project']
     
