@@ -2,149 +2,131 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
+class User(BaseModel):
+    self: Optional[str] = None
+    name: str
+    key: str
+    accountId: str
+    emailAddress: Optional[str] = None
+    avatarUrls: dict
+    displayName: str
+    active: bool
+    timeZone: Optional[str] = None
+    groups: Optional[dict] = None
+    locale: Optional[str] = None
+    accountType: str
+
 class IssueType(BaseModel):
     self: str
     id: int
     description: str
-    iconUrl: str
+    iconUrl: Optional[str] = None
     name: str
+    untranslatedName: Optional[str] = None 
     subtask: bool
-    fields: Optional[dict]
-    statuses: List[str]
+    fields: Optional[dict] = None
+    statuses: List[str] = None
     namedValue: str
 
 class Priority(BaseModel):
     self: str
     id: int
     name: str
-    iconUrl: str
+    iconUrl: Optional[str] = None
     namedValue: str
 
-class StatusCategory(BaseModel):
+class Assignee(BaseModel):
+    self: str
+    name: Optional[str] = None
+    key: Optional[str] = None
+    accountId: str
+    emailAddress: Optional[str] = None 
+    avatarUrls: dict
+    displayName: str
+    active: bool
+    timeZone: str
+    groups: Optional[dict] = None
+    locale: Optional[str] = None
+    accountType: str
+
+class Project(BaseModel):
     self: str
     id: int
     key: str
-    colorName: str
     name: str
+    description: Optional[str] = None
+    avatarUrls: dict
+    issuetypes: Optional[dict] = None
+    projectCategory: Optional[dict] = None
+    email: Optional[str] = None
+    lead: Optional[dict] = None
+    components: Optional[dict] = None
+    versions: Optional[dict] = None
+    projectTypeKey: str
+    simplified: bool
 
 class Status(BaseModel):
     self: str
     description: str
     iconUrl: str
     name: str
-    untranslatedName: Optional[str]
+    untranslatedName: Optional[str] = None
     id: int
-    statusCategory: StatusCategory
-    untranslatedNameValue: Optional[str]
+    statusCategory: dict
+    untranslatedNameValue: Optional[str] = None
 
-class Component(BaseModel):
-    pass  # Define fields if needed
-
-class Watchers(BaseModel):
+class Watches(BaseModel):
     self: str
     watchCount: int
     isWatching: bool
 
-class Sla(BaseModel):
-    id: str
-    name: str
-    _links: dict
-    completedCycles: List[dict]
-    ongoingCycle: dict
-
-class RequestType(BaseModel):
-    id: str
-    _links: dict
-    name: str
-    description: str
-    helpText: str
-    issueTypeId: str
-    serviceDeskId: str
-    groupIds: List[str]
-    icon: dict
-
-class CurrentStatus(BaseModel):
-    status: str
-    statusCategory: str
-    statusDate: dict
-
-class CommentAuthor(BaseModel):
-    self: str
-    name: Optional[str]
-    key: Optional[str]
-    accountId: str
-    emailAddress: Optional[str]
-    avatarUrls: dict
-    displayName: str
-    active: bool
-    timeZone: Optional[str]
-    groups: Optional[List[str]]
-    locale: Optional[str]
-    accountType: str
-
-class Comment(BaseModel):
-    self: str
-    id: int
-    author: CommentAuthor
-    body: str
-    renderedBody: Optional[str]
-    updateAuthor: CommentAuthor
+class Fields(BaseModel):
+    statuscategorychangedate: str
+    issuetype: Optional[IssueType] = None
+    project: Optional[Project] = None
+    fixVersions: List[dict] = None
+    workratio: int
+    issuerestriction: dict
+    watches: Optional[Watches] = None
     created: int
+    priority: Optional[Priority] = None
+    labels: List[str] = None
+    versions: List[dict] = None
+    issuelinks: List[dict] = None
+    assignee: Optional[Assignee] = None
     updated: int
-    visibility: Optional[dict]
+    status: Optional[Status] = None
+    components: List[dict] = None
+    description: Optional[str] = None
+    timetracking: dict
+    attachment: List[dict] = None
+    summary: str
+    creator: Optional[Assignee] = None
+    subtasks: List[dict] = None
+    reporter: Optional[Assignee] = None
+    aggregateprogress: dict
+    progress: Optional[dict] = None
+    votes: Optional[dict] = None
+    comment: Optional[dict] = None
+    worklog: Optional[dict] = None
 
-class User(BaseModel):
-    self: Optional[str]
-    name: str
-    key: str
-    accountId: str
-    emailAddress: Optional[str]
-    avatarUrls: dict
-    displayName: str
-    active: bool
-    timeZone: Optional[str]
-    groups: Optional[List[str]]
-    locale: Optional[str]
-    accountType: str
+class Changelog(BaseModel):
+    startAt: int
+    maxResults: int
+    total: int
 
 class Issue(BaseModel):
     self: str
     id: int
     key: str
-    changelog: dict
-    fields: dict
-    renderedFields: Optional[dict]
-
-class IssueComment(BaseModel):
-    self: str
-    id: int
-    author: CommentAuthor
-    body: str
-    renderedBody: Optional[str]
-    updateAuthor: CommentAuthor
-    created: int
-    updated: int
-    visibility: Optional[dict]
-
-class IssueUser(BaseModel):
-    self: Optional[str]
-    name: str
-    key: str
-    accountId: str
-    emailAddress: Optional[str]
-    avatarUrls: dict
-    displayName: str
-    active: bool
-    timeZone: Optional[str]
-    groups: Optional[List[str]]
-    locale: str
-    accountType: str
+    changelog: Optional[Changelog] = None
+    fields: Optional[Fields] = None
 
 class JiraDataRequest(BaseModel):
     issue: Issue
-    comment: IssueComment
-    user: IssueUser
+    user: User
     timestamp: int
+
     
     
     

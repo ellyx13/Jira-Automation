@@ -42,14 +42,16 @@ async def insert_event(summary, description):
 
 
 async def create_event(data: schemas.calendar.JiraDataRequest):
-    # data = data.model_dump() 
+    data = data.model_dump() 
     issue_data = data['issue']['fields']
     project_data = issue_data['project']
     
     summary = project_data['name'] + ' ' + issue_data['summary']
     
     labels = ', '.join(issue_data['labels'])
-    description = 'Priority: ' + issue_data['priority']['name'] + '\nLabel: ' + labels + '\nIssue: ' + data['issue']['self']
+    my_profile = data['issue']['self'].split('rest')[0]
+    issue_link = my_profile + 'browse/' + data['issue']['key']
+    description = 'Priority: ' + issue_data['priority']['name'] + '\nLabel: ' + labels + '\nIssue: ' + issue_link
     
     result = await insert_event(summary, description)
     results = {}
